@@ -784,77 +784,88 @@ static GetItemEntry sGetItemTable[] = {
 
 #define GET_PLAYER_ANIM(group, type) D_80853914[group * PLAYER_ANIMTYPE_MAX + type]
 
+#define GLUE(a, b) a##b
+#define GLUE2(a, b) GLUE(a, b)
+
+#define STANCE_NORMAL _normal
+#define STANCE_FIGHTER _fighter
+#define STANCE_ANCHOR _anchor
+#define STANCE_DEMO _demo
+#define STANCE_BOW _bow
+
+#define MODIFIER_NONE
+#define MODIFIER_FREE _free
+#define MODIFIER_LONG _long
+
+#define DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, stance, modifier) \
+    GLUE2(GLUE2(GLUE2(GLUE2(&gPlayerAnim_link, stance), _), anim), modifier)
+#define DEFINE_ANIMGROUP_ANIMATION_HEADERS(anim, s1, s2, s3, s4, s5, s6, m1, m2, m3, m4, m5, m6)          \
+    DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s1, m1), DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s2, m2),     \
+        DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s3, m3), DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s4, m4), \
+        DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s5, m5), DEFINE_ANIMGROUP_ANIMATION_HEADER(anim, s6, m6)
+
+// clang-format off
 static LinkAnimationHeader* D_80853914[PLAYER_ANIMGROUP_MAX * PLAYER_ANIMTYPE_MAX] = {
     /* PLAYER_ANIMGROUP_wait */
-    &gPlayerAnim_link_normal_wait_free,
-    &gPlayerAnim_link_normal_wait,
-    &gPlayerAnim_link_normal_wait,
-    &gPlayerAnim_link_fighter_wait_long,
-    &gPlayerAnim_link_normal_wait_free,
-    &gPlayerAnim_link_normal_wait_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        wait,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_walk */
-    &gPlayerAnim_link_normal_walk_free,
-    &gPlayerAnim_link_normal_walk,
-    &gPlayerAnim_link_normal_walk,
-    &gPlayerAnim_link_fighter_walk_long,
-    &gPlayerAnim_link_normal_walk_free,
-    &gPlayerAnim_link_normal_walk_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        walk,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_run */
-    &gPlayerAnim_link_normal_run_free,
-    &gPlayerAnim_link_fighter_run,
-    &gPlayerAnim_link_normal_run,
-    &gPlayerAnim_link_fighter_run_long,
-    &gPlayerAnim_link_normal_run_free,
-    &gPlayerAnim_link_normal_run_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        run,
+        STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE,  MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_damage_run */
-    &gPlayerAnim_link_normal_damage_run_free,
-    &gPlayerAnim_link_fighter_damage_run,
-    &gPlayerAnim_link_normal_damage_run_free,
-    &gPlayerAnim_link_fighter_damage_run_long,
-    &gPlayerAnim_link_normal_damage_run_free,
-    &gPlayerAnim_link_normal_damage_run_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        damage_run,
+        STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE,  MODIFIER_FREE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_heavy_run */
-    &gPlayerAnim_link_normal_heavy_run_free,
-    &gPlayerAnim_link_normal_heavy_run,
-    &gPlayerAnim_link_normal_heavy_run_free,
-    &gPlayerAnim_link_fighter_heavy_run_long,
-    &gPlayerAnim_link_normal_heavy_run_free,
-    &gPlayerAnim_link_normal_heavy_run_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        heavy_run,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_waitL */
-    &gPlayerAnim_link_normal_waitL_free,
-    &gPlayerAnim_link_anchor_waitL,
-    &gPlayerAnim_link_anchor_waitL,
-    &gPlayerAnim_link_fighter_waitL_long,
-    &gPlayerAnim_link_normal_waitL_free,
-    &gPlayerAnim_link_normal_waitL_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        waitL,
+        STANCE_NORMAL, STANCE_ANCHOR, STANCE_ANCHOR, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_waitR */
-    &gPlayerAnim_link_normal_waitR_free,
-    &gPlayerAnim_link_anchor_waitR,
-    &gPlayerAnim_link_anchor_waitR,
-    &gPlayerAnim_link_fighter_waitR_long,
-    &gPlayerAnim_link_normal_waitR_free,
-    &gPlayerAnim_link_normal_waitR_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        waitR,
+        STANCE_NORMAL, STANCE_ANCHOR, STANCE_ANCHOR, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_wait2waitR */
-    &gPlayerAnim_link_fighter_wait2waitR_long,
-    &gPlayerAnim_link_normal_wait2waitR,
-    &gPlayerAnim_link_normal_wait2waitR,
-    &gPlayerAnim_link_fighter_wait2waitR_long,
-    &gPlayerAnim_link_fighter_wait2waitR_long,
-    &gPlayerAnim_link_fighter_wait2waitR_long,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        wait2waitR,
+        STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_FIGHTER, STANCE_FIGHTER,
+        MODIFIER_LONG,  MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_LONG,  MODIFIER_LONG
+    ),
     /* PLAYER_ANIMGROUP_normal2fighter */
-    &gPlayerAnim_link_normal_normal2fighter_free,
-    &gPlayerAnim_link_fighter_normal2fighter,
-    &gPlayerAnim_link_fighter_normal2fighter,
-    &gPlayerAnim_link_normal_normal2fighter_free,
-    &gPlayerAnim_link_normal_normal2fighter_free,
-    &gPlayerAnim_link_normal_normal2fighter_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        normal2fighter,
+        STANCE_NORMAL, STANCE_FIGHTER, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE,  MODIFIER_NONE,  MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_doorA_free */
-    &gPlayerAnim_link_demo_doorA_link_free,
-    &gPlayerAnim_link_demo_doorA_link,
-    &gPlayerAnim_link_demo_doorA_link,
-    &gPlayerAnim_link_demo_doorA_link_free,
-    &gPlayerAnim_link_demo_doorA_link_free,
-    &gPlayerAnim_link_demo_doorA_link_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        doorA_link,
+        STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_doorA */
     &gPlayerAnim_clink_demo_doorA_link,
     &gPlayerAnim_clink_demo_doorA_link,
@@ -863,12 +874,11 @@ static LinkAnimationHeader* D_80853914[PLAYER_ANIMGROUP_MAX * PLAYER_ANIMTYPE_MA
     &gPlayerAnim_clink_demo_doorA_link,
     &gPlayerAnim_clink_demo_doorA_link,
     /* PLAYER_ANIMGROUP_doorB_free */
-    &gPlayerAnim_link_demo_doorB_link_free,
-    &gPlayerAnim_link_demo_doorB_link,
-    &gPlayerAnim_link_demo_doorB_link,
-    &gPlayerAnim_link_demo_doorB_link_free,
-    &gPlayerAnim_link_demo_doorB_link_free,
-    &gPlayerAnim_link_demo_doorB_link_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        doorB_link,
+        STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,   STANCE_DEMO,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_doorB */
     &gPlayerAnim_clink_demo_doorB_link,
     &gPlayerAnim_clink_demo_doorB_link,
@@ -877,222 +887,191 @@ static LinkAnimationHeader* D_80853914[PLAYER_ANIMGROUP_MAX * PLAYER_ANIMTYPE_MA
     &gPlayerAnim_clink_demo_doorB_link,
     &gPlayerAnim_clink_demo_doorB_link,
     /* PLAYER_ANIMGROUP_carryB */
-    &gPlayerAnim_link_normal_carryB_free,
-    &gPlayerAnim_link_normal_carryB,
-    &gPlayerAnim_link_normal_carryB,
-    &gPlayerAnim_link_normal_carryB_free,
-    &gPlayerAnim_link_normal_carryB_free,
-    &gPlayerAnim_link_normal_carryB_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        carryB,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_landing */
-    &gPlayerAnim_link_normal_landing_free,
-    &gPlayerAnim_link_normal_landing,
-    &gPlayerAnim_link_normal_landing,
-    &gPlayerAnim_link_normal_landing_free,
-    &gPlayerAnim_link_normal_landing_free,
-    &gPlayerAnim_link_normal_landing_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        landing,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_short_landing */
-    &gPlayerAnim_link_normal_short_landing_free,
-    &gPlayerAnim_link_normal_short_landing,
-    &gPlayerAnim_link_normal_short_landing,
-    &gPlayerAnim_link_normal_short_landing_free,
-    &gPlayerAnim_link_normal_short_landing_free,
-    &gPlayerAnim_link_normal_short_landing_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        short_landing,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_landing_roll */
-    &gPlayerAnim_link_normal_landing_roll_free,
-    &gPlayerAnim_link_normal_landing_roll,
-    &gPlayerAnim_link_normal_landing_roll,
-    &gPlayerAnim_link_fighter_landing_roll_long,
-    &gPlayerAnim_link_normal_landing_roll_free,
-    &gPlayerAnim_link_normal_landing_roll_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        landing_roll,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_hip_down */
-    &gPlayerAnim_link_normal_hip_down_free,
-    &gPlayerAnim_link_normal_hip_down,
-    &gPlayerAnim_link_normal_hip_down,
-    &gPlayerAnim_link_normal_hip_down_long,
-    &gPlayerAnim_link_normal_hip_down_free,
-    &gPlayerAnim_link_normal_hip_down_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        hip_down,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_walk_endL */
-    &gPlayerAnim_link_normal_walk_endL_free,
-    &gPlayerAnim_link_normal_walk_endL,
-    &gPlayerAnim_link_normal_walk_endL,
-    &gPlayerAnim_link_fighter_walk_endL_long,
-    &gPlayerAnim_link_normal_walk_endL_free,
-    &gPlayerAnim_link_normal_walk_endL_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        walk_endL,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_walk_endR */
-    &gPlayerAnim_link_normal_walk_endR_free,
-    &gPlayerAnim_link_normal_walk_endR,
-    &gPlayerAnim_link_normal_walk_endR,
-    &gPlayerAnim_link_fighter_walk_endR_long,
-    &gPlayerAnim_link_normal_walk_endR_free,
-    &gPlayerAnim_link_normal_walk_endR_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        walk_endR,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_defense */
-    &gPlayerAnim_link_normal_defense_free,
-    &gPlayerAnim_link_normal_defense,
-    &gPlayerAnim_link_normal_defense,
-    &gPlayerAnim_link_normal_defense_free,
-    &gPlayerAnim_link_bow_defense,
-    &gPlayerAnim_link_normal_defense_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        defense,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_BOW,   STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_NONE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_defense_wait */
-    &gPlayerAnim_link_normal_defense_wait_free,
-    &gPlayerAnim_link_normal_defense_wait,
-    &gPlayerAnim_link_normal_defense_wait,
-    &gPlayerAnim_link_normal_defense_wait_free,
-    &gPlayerAnim_link_bow_defense_wait,
-    &gPlayerAnim_link_normal_defense_wait_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        defense_wait,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_BOW,   STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_NONE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_defense_end */
-    &gPlayerAnim_link_normal_defense_end_free,
-    &gPlayerAnim_link_normal_defense_end,
-    &gPlayerAnim_link_normal_defense_end,
-    &gPlayerAnim_link_normal_defense_end_free,
-    &gPlayerAnim_link_normal_defense_end_free,
-    &gPlayerAnim_link_normal_defense_end_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        defense_end,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_side_walk */
-    &gPlayerAnim_link_normal_side_walk_free,
-    &gPlayerAnim_link_normal_side_walk,
-    &gPlayerAnim_link_normal_side_walk,
-    &gPlayerAnim_link_fighter_side_walk_long,
-    &gPlayerAnim_link_normal_side_walk_free,
-    &gPlayerAnim_link_normal_side_walk_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        side_walk,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_side_walkL */
-    &gPlayerAnim_link_normal_side_walkL_free,
-    &gPlayerAnim_link_anchor_side_walkL,
-    &gPlayerAnim_link_anchor_side_walkL,
-    &gPlayerAnim_link_fighter_side_walkL_long,
-    &gPlayerAnim_link_normal_side_walkL_free,
-    &gPlayerAnim_link_normal_side_walkL_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        side_walkL,
+        STANCE_NORMAL, STANCE_ANCHOR, STANCE_ANCHOR, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_side_walkR */
-    &gPlayerAnim_link_normal_side_walkR_free,
-    &gPlayerAnim_link_anchor_side_walkR,
-    &gPlayerAnim_link_anchor_side_walkR,
-    &gPlayerAnim_link_fighter_side_walkR_long,
-    &gPlayerAnim_link_normal_side_walkR_free,
-    &gPlayerAnim_link_normal_side_walkR_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        side_walkR,
+        STANCE_NORMAL, STANCE_ANCHOR, STANCE_ANCHOR, STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_45_turn */
-    &gPlayerAnim_link_normal_45_turn_free,
-    &gPlayerAnim_link_normal_45_turn,
-    &gPlayerAnim_link_normal_45_turn,
-    &gPlayerAnim_link_normal_45_turn_free,
-    &gPlayerAnim_link_normal_45_turn_free,
-    &gPlayerAnim_link_normal_45_turn_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        45_turn,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_waitL2wait */
-    &gPlayerAnim_link_fighter_waitL2wait_long,
-    &gPlayerAnim_link_normal_waitL2wait,
-    &gPlayerAnim_link_normal_waitL2wait,
-    &gPlayerAnim_link_fighter_waitL2wait_long,
-    &gPlayerAnim_link_fighter_waitL2wait_long,
-    &gPlayerAnim_link_fighter_waitL2wait_long,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        waitL2wait,
+        STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_FIGHTER, STANCE_FIGHTER,
+        MODIFIER_LONG,  MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_LONG,  MODIFIER_LONG
+    ),
     /* PLAYER_ANIMGROUP_waitR2wait */
-    &gPlayerAnim_link_fighter_waitR2wait_long,
-    &gPlayerAnim_link_normal_waitR2wait,
-    &gPlayerAnim_link_normal_waitR2wait,
-    &gPlayerAnim_link_fighter_waitR2wait_long,
-    &gPlayerAnim_link_fighter_waitR2wait_long,
-    &gPlayerAnim_link_fighter_waitR2wait_long,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        waitR2wait,
+        STANCE_FIGHTER, STANCE_NORMAL, STANCE_NORMAL, STANCE_FIGHTER, STANCE_FIGHTER, STANCE_FIGHTER,
+        MODIFIER_LONG,  MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG,  MODIFIER_LONG,  MODIFIER_LONG
+    ),
     /* PLAYER_ANIMGROUP_throw */
-    &gPlayerAnim_link_normal_throw_free,
-    &gPlayerAnim_link_normal_throw,
-    &gPlayerAnim_link_normal_throw,
-    &gPlayerAnim_link_normal_throw_free,
-    &gPlayerAnim_link_normal_throw_free,
-    &gPlayerAnim_link_normal_throw_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        throw,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_put */
-    &gPlayerAnim_link_normal_put_free,
-    &gPlayerAnim_link_normal_put,
-    &gPlayerAnim_link_normal_put,
-    &gPlayerAnim_link_normal_put_free,
-    &gPlayerAnim_link_normal_put_free,
-    &gPlayerAnim_link_normal_put_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        put,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_back_walk */
-    &gPlayerAnim_link_normal_back_walk,
-    &gPlayerAnim_link_normal_back_walk,
-    &gPlayerAnim_link_normal_back_walk,
-    &gPlayerAnim_link_normal_back_walk,
-    &gPlayerAnim_link_normal_back_walk,
-    &gPlayerAnim_link_normal_back_walk,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        back_walk,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_NONE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_NONE
+    ),
     /* PLAYER_ANIMGROUP_check */
-    &gPlayerAnim_link_normal_check_free,
-    &gPlayerAnim_link_normal_check,
-    &gPlayerAnim_link_normal_check,
-    &gPlayerAnim_link_normal_check_free,
-    &gPlayerAnim_link_normal_check_free,
-    &gPlayerAnim_link_normal_check_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        check,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_check_wait */
-    &gPlayerAnim_link_normal_check_wait_free,
-    &gPlayerAnim_link_normal_check_wait,
-    &gPlayerAnim_link_normal_check_wait,
-    &gPlayerAnim_link_normal_check_wait_free,
-    &gPlayerAnim_link_normal_check_wait_free,
-    &gPlayerAnim_link_normal_check_wait_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        check_wait,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_check_end */
-    &gPlayerAnim_link_normal_check_end_free,
-    &gPlayerAnim_link_normal_check_end,
-    &gPlayerAnim_link_normal_check_end,
-    &gPlayerAnim_link_normal_check_end_free,
-    &gPlayerAnim_link_normal_check_end_free,
-    &gPlayerAnim_link_normal_check_end_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        check_end,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_pull_start */
-    &gPlayerAnim_link_normal_pull_start_free,
-    &gPlayerAnim_link_normal_pull_start,
-    &gPlayerAnim_link_normal_pull_start,
-    &gPlayerAnim_link_normal_pull_start_free,
-    &gPlayerAnim_link_normal_pull_start_free,
-    &gPlayerAnim_link_normal_pull_start_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        pull_start,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_pulling */
-    &gPlayerAnim_link_normal_pulling_free,
-    &gPlayerAnim_link_normal_pulling,
-    &gPlayerAnim_link_normal_pulling,
-    &gPlayerAnim_link_normal_pulling_free,
-    &gPlayerAnim_link_normal_pulling_free,
-    &gPlayerAnim_link_normal_pulling_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        pulling,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_pull_end */
-    &gPlayerAnim_link_normal_pull_end_free,
-    &gPlayerAnim_link_normal_pull_end,
-    &gPlayerAnim_link_normal_pull_end,
-    &gPlayerAnim_link_normal_pull_end_free,
-    &gPlayerAnim_link_normal_pull_end_free,
-    &gPlayerAnim_link_normal_pull_end_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        pull_end,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_fall_up */
-    &gPlayerAnim_link_normal_fall_up_free,
-    &gPlayerAnim_link_normal_fall_up,
-    &gPlayerAnim_link_normal_fall_up,
-    &gPlayerAnim_link_normal_fall_up_free,
-    &gPlayerAnim_link_normal_fall_up_free,
-    &gPlayerAnim_link_normal_fall_up_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        fall_up,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_jump_climb_hold */
-    &gPlayerAnim_link_normal_jump_climb_hold_free,
-    &gPlayerAnim_link_normal_jump_climb_hold,
-    &gPlayerAnim_link_normal_jump_climb_hold,
-    &gPlayerAnim_link_normal_jump_climb_hold_free,
-    &gPlayerAnim_link_normal_jump_climb_hold_free,
-    &gPlayerAnim_link_normal_jump_climb_hold_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        jump_climb_hold,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_jump_climb_wait */
-    &gPlayerAnim_link_normal_jump_climb_wait_free,
-    &gPlayerAnim_link_normal_jump_climb_wait,
-    &gPlayerAnim_link_normal_jump_climb_wait,
-    &gPlayerAnim_link_normal_jump_climb_wait_free,
-    &gPlayerAnim_link_normal_jump_climb_wait_free,
-    &gPlayerAnim_link_normal_jump_climb_wait_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        jump_climb_wait,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_jump_climb_up */
-    &gPlayerAnim_link_normal_jump_climb_up_free,
-    &gPlayerAnim_link_normal_jump_climb_up,
-    &gPlayerAnim_link_normal_jump_climb_up,
-    &gPlayerAnim_link_normal_jump_climb_up_free,
-    &gPlayerAnim_link_normal_jump_climb_up_free,
-    &gPlayerAnim_link_normal_jump_climb_up_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        jump_climb_up,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_FREE, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_down_slope_slip_end */
-    &gPlayerAnim_link_normal_down_slope_slip_end_free,
-    &gPlayerAnim_link_normal_down_slope_slip_end,
-    &gPlayerAnim_link_normal_down_slope_slip_end,
-    &gPlayerAnim_link_normal_down_slope_slip_end_long,
-    &gPlayerAnim_link_normal_down_slope_slip_end_free,
-    &gPlayerAnim_link_normal_down_slope_slip_end_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        down_slope_slip_end,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_up_slope_slip_end */
-    &gPlayerAnim_link_normal_up_slope_slip_end_free,
-    &gPlayerAnim_link_normal_up_slope_slip_end,
-    &gPlayerAnim_link_normal_up_slope_slip_end,
-    &gPlayerAnim_link_normal_up_slope_slip_end_long,
-    &gPlayerAnim_link_normal_up_slope_slip_end_free,
-    &gPlayerAnim_link_normal_up_slope_slip_end_free,
+    DEFINE_ANIMGROUP_ANIMATION_HEADERS(
+        up_slope_slip_end,
+        STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL, STANCE_NORMAL,
+        MODIFIER_FREE, MODIFIER_NONE, MODIFIER_NONE, MODIFIER_LONG, MODIFIER_FREE, MODIFIER_FREE
+    ),
     /* PLAYER_ANIMGROUP_nwait */
     &gPlayerAnim_sude_nwait,
     &gPlayerAnim_lkt_nwait,
@@ -1101,6 +1080,23 @@ static LinkAnimationHeader* D_80853914[PLAYER_ANIMGROUP_MAX * PLAYER_ANIMTYPE_MA
     &gPlayerAnim_sude_nwait,
     &gPlayerAnim_sude_nwait,
 };
+// clang-format on
+
+#undef GLUE
+#undef GLUE2
+
+#undef STANCE_NORMAL
+#undef STANCE_FIGHTER
+#undef STANCE_ANCHOR
+#undef STANCE_DEMO
+#undef STANCE_BOW
+
+#undef MODIFIER_NONE
+#undef MODIFIER_FREE
+#undef MODIFIER_LONG
+
+#undef DEFINE_ANIMGROUP_ANIMATION_HEADER
+#undef DEFINE_ANIMGROUP_ANIMATION_HEADERS
 
 static LinkAnimationHeader* D_80853D4C[][3] = {
     { &gPlayerAnim_link_fighter_front_jump, &gPlayerAnim_link_fighter_front_jump_end,
