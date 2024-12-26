@@ -1,0 +1,3 @@
+[submodule "N64-IPL"]
+	path = N64-IPL
+	url = https://github.com/decompals/N64-IPL.git

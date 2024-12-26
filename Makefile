@@ -662,6 +662,7 @@ endif
 
 clean:
 	$(RM) -r $(BUILD_DIR)
+	$(MAKE) -C N64-IPL clean
 
 assetclean:
 	$(RM) -r $(EXTRACTED_DIR)
@@ -670,6 +671,7 @@ distclean:
 	$(RM) -r extracted/
 	$(RM) -r build/
 	$(MAKE) -C tools distclean
+	$(MAKE) -C N64-IPL distclean
 
 venv:
 # Create the virtual environment if it doesn't exist.
@@ -680,6 +682,8 @@ venv:
 
 setup: venv
 	$(MAKE) -C tools
+	$(MAKE) -C N64-IPL setup
+	$(MAKE) -C N64-IPL ipl3.X105
 	$(PYTHON) tools/decompress_baserom.py $(VERSION)
 	$(PYTHON) tools/extract_baserom.py $(BASEROM_DIR)/baserom-decompressed.z64 $(EXTRACTED_DIR)/baserom -v $(VERSION)
 	$(PYTHON) tools/extract_incbins.py $(EXTRACTED_DIR)/baserom $(EXTRACTED_DIR)/incbin -v $(VERSION)
