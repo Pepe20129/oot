@@ -1,7 +1,13 @@
+#include "z_kaleido_scope.h"
 #if PLATFORM_N64
 #include "n64dd.h"
 #endif
-#include "z_kaleido_scope.h"
+#include "seqcmd.h"
+#include "terminal.h"
+#include "title_setup_state.h"
+#include "versions.h"
+#include "z64save.h"
+
 #include "assets/textures/icon_item_static/icon_item_static.h"
 #include "assets/textures/icon_item_24_static/icon_item_24_static.h"
 #if OOT_NTSC
@@ -13,10 +19,8 @@
 #include "assets/textures/icon_item_fra_static/icon_item_fra_static.h"
 #endif
 #include "assets/textures/icon_item_gameover_static/icon_item_gameover_static.h"
-#include "terminal.h"
-#include "versions.h"
 
-#pragma increment_block_number "gc-eu:128 gc-eu-mq:128 ntsc-1.0:128 ntsc-1.1:128 ntsc-1.2:128 pal-1.0:128 pal-1.1:128"
+#pragma increment_block_number "gc-eu:0 gc-eu-mq:0 ntsc-1.0:128 ntsc-1.1:128 ntsc-1.2:128 pal-1.0:128 pal-1.1:128"
 
 #if !PLATFORM_GC
 #define KALEIDO_PROMPT_CURSOR_R 100
@@ -902,9 +906,14 @@ static void* sPromptChoiceTexs[][2] = {
 #endif
 };
 
+//! @bug On the iQue version, kaleido bss is reported to be just 0x10 bytes large in the relocation section. This is
+//! likely due to not counting the size of COMMON symbols in the overlay. sPlayerPreRender was likely originally
+//! non-static, but we make it static here to match the bss order and patch the relocation section later in the build
+//! as our relocation generator does count COMMON symbols.
+
 static u8 D_808321A8[5];
 static PreRender sPlayerPreRender;
-static void* sPreRenderCvg;
+void* sPreRenderCvg;
 
 void KaleidoScope_SetupPlayerPreRender(PlayState* play) {
     Gfx* gfx;

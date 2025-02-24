@@ -1,11 +1,14 @@
 #include "ultra64.h"
-#include "global.h"
 #include "quake.h"
 #include "terminal.h"
+#include "z64cutscene_spline.h"
+#include "z64debug.h"
+#include "z64olib.h"
+#include "z64save.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 
-#pragma increment_block_number "gc-eu:128 gc-eu-mq:128 gc-jp:128 gc-jp-ce:128 gc-jp-mq:128 gc-us:128 gc-us-mq:128" \
-                               "ntsc-1.0:128 ntsc-1.1:128 ntsc-1.2:128 pal-1.0:128 pal-1.1:128"
+#pragma increment_block_number "gc-eu:0 gc-eu-mq:0 gc-jp:0 gc-jp-ce:0 gc-jp-mq:0 gc-us:0 gc-us-mq:0 ique-cn:0" \
+                               "ntsc-1.0:0 ntsc-1.1:0 ntsc-1.2:0 pal-1.0:0 pal-1.1:0"
 
 s16 Camera_RequestSettingImpl(Camera* camera, s16 requestedSetting, s16 flags);
 s32 Camera_RequestModeImpl(Camera* camera, s16 requestedMode, u8 forceModeChange);
@@ -3639,7 +3642,7 @@ s32 Camera_KeepOn3(Camera* camera) {
 }
 
 #pragma increment_block_number "gc-eu:128 gc-eu-mq:128 gc-jp:128 gc-jp-ce:128 gc-jp-mq:128 gc-us:128 gc-us-mq:128" \
-                               "ntsc-1.0:133 ntsc-1.1:133 ntsc-1.2:133 pal-1.0:131 pal-1.1:131"
+                               "ique-cn:128 ntsc-1.0:109 ntsc-1.1:109 ntsc-1.2:109 pal-1.0:107 pal-1.1:107"
 
 s32 Camera_KeepOn4(Camera* camera) {
     static Vec3f D_8015BD50;
@@ -7532,7 +7535,7 @@ void Camera_Init(Camera* camera, View* view, CollisionContext* colCtx, PlayState
 #if DEBUG_FEATURES
     sDbgModeIdx = -1;
 #endif
-    D_8011D3F0 = 3;
+    sSceneInitLetterboxTimer = 3; // show letterbox for 3 frames at the start of a new scene
     PRINTF(VT_FGCOL(BLUE) "camera: initialize --- " VT_RST " UID %d\n", camera->uid);
 }
 
@@ -8141,8 +8144,8 @@ Vec3s Camera_Update(Camera* camera) {
         if ((gSaveContext.gameMode != GAMEMODE_NORMAL) && (gSaveContext.gameMode != GAMEMODE_END_CREDITS)) {
             sCameraInterfaceField = CAM_INTERFACE_FIELD(CAM_LETTERBOX_NONE, CAM_HUD_VISIBILITY_ALL, 0);
             Camera_UpdateInterface(sCameraInterfaceField);
-        } else if ((D_8011D3F0 != 0) && (camera->camId == CAM_ID_MAIN)) {
-            D_8011D3F0--;
+        } else if ((sSceneInitLetterboxTimer != 0) && (camera->camId == CAM_ID_MAIN)) {
+            sSceneInitLetterboxTimer--;
             sCameraInterfaceField = CAM_INTERFACE_FIELD(CAM_LETTERBOX_LARGE, CAM_HUD_VISIBILITY_NOTHING_ALT, 0);
             Camera_UpdateInterface(sCameraInterfaceField);
         } else if (camera->play->transitionMode != TRANS_MODE_OFF) {

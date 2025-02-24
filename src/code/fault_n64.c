@@ -1,10 +1,17 @@
-#pragma increment_block_number "ntsc-1.0:0 ntsc-1.1:0 ntsc-1.2:0 pal-1.0:0 pal-1.1:0"
-
-#include "global.h"
-#include "fault.h"
 #include "libc64/os_malloc.h"
+#include "libc64/sleep.h"
+#include "libc64/sprintf.h"
+#include "controller.h"
+#include "fault.h"
+#include "padmgr.h"
+#include "segmented_address.h"
 #include "stack.h"
+#include "stackcheck.h"
 #include "terminal.h"
+#include "z64thread.h"
+
+#include "macros.h"
+#include "global.h"
 
 #pragma increment_block_number "ntsc-1.0:192 ntsc-1.1:192 ntsc-1.2:192 pal-1.0:192 pal-1.1:192"
 
